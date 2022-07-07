@@ -42,10 +42,15 @@ class NoteList extends StatelessWidget {
         separatorBuilder: (_, __) => Divider(height: 1, color: Colors.green),
         itemBuilder: (_, index) {
           return ListTile(
-              title: Text(notes[index].noteTitle!,
-                  style: TextStyle(color: Theme.of(context).primaryColor)),
-              subtitle: Text(
-                  'Last edited on ${formatDatetime(notes[index].latestEditDateTime!)}'));
+            title: Text(notes[index].noteTitle!,
+                style: TextStyle(color: Theme.of(context).primaryColor)),
+            subtitle: Text(
+                'Last edited on ${formatDatetime(notes[index].latestEditDateTime!)}'),
+            onTap: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (_) => NoteModify()));
+            },
+          );
         },
         itemCount: notes.length,
       ),
