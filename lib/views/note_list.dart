@@ -1,7 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:tuso_working_with_rest_api/models/note_for_listing.dart';
 
 class NoteList extends StatelessWidget {
-  const NoteList({Key? key}) : super(key: key);
+  //const NoteList({Key? key}) : super(key: key);
+
+  final notes = [
+    new NoteForListing(
+        noteID: "1",
+        createDateTime: DateTime.now(),
+        latestEditDateTime: DateTime.now(),
+        noteTitle: "Note 1"),
+    new NoteForListing(
+        noteID: "2",
+        createDateTime: DateTime.now(),
+        latestEditDateTime: DateTime.now(),
+        noteTitle: "Note 2"),
+    new NoteForListing(
+        noteID: "3",
+        createDateTime: DateTime.now(),
+        latestEditDateTime: DateTime.now(),
+        noteTitle: "Note 3")
+  ];
+
+  String formatDatetime(DateTime dateTime) {
+    return '${dateTime.day}/${dateTime.month}/${dateTime.year}';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,12 +38,12 @@ class NoteList extends StatelessWidget {
         separatorBuilder: (_, __) => Divider(height: 1, color: Colors.green),
         itemBuilder: (_, index) {
           return ListTile(
-            title: Text('Hello',
-                style: TextStyle(color: Theme.of(context).primaryColor)),
-            subtitle: Text('Last edited on 21/2/2021'),
-          );
+              title: Text(notes[index].noteTitle!,
+                  style: TextStyle(color: Theme.of(context).primaryColor)),
+              subtitle: Text(
+                  'Last edited on ${formatDatetime(notes[index].latestEditDateTime!)}'));
         },
-        itemCount: 30,
+        itemCount: notes.length,
       ),
     );
   }
