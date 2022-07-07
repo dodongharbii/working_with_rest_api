@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tuso_working_with_rest_api/models/note_for_listing.dart';
+import 'package:tuso_working_with_rest_api/views/note_delete.dart';
 import 'package:tuso_working_with_rest_api/views/note_modify.dart';
 
 class NoteList extends StatelessWidget {
@@ -45,7 +46,21 @@ class NoteList extends StatelessWidget {
             key: ValueKey(notes[index].noteID),
             direction: DismissDirection.startToEnd,
             onDismissed: (direction) {},
-            confirmDismiss: (direction) {},
+            confirmDismiss: (direction) async {
+              final result = await showDialog(
+                context: context,
+                builder: (_) => NoteDelete(),
+              );
+              return result;
+            },
+            background: Container(
+              color: Colors.red,
+              padding: EdgeInsets.only(left: 16),
+              child: Align(
+                child: Icon(Icons.delete, color: Colors.white),
+                alignment: Alignment.centerLeft,
+              ),
+            ),
             child: ListTile(
               title: Text(notes[index].noteTitle!,
                   style: TextStyle(color: Theme.of(context).primaryColor)),
