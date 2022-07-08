@@ -15,16 +15,8 @@ class NotesService {
       if (data.statusCode == 200) {
         final jsonData = json.decode(data.body);
         final notes = <NoteForListing>[];
-        for (var jsonData in jsonData) {
-          final note = NoteForListing(
-            noteID: jsonData['noteID'],
-            noteTitle: jsonData['noteTitle'],
-            createDateTime: DateTime.parse(jsonData['createDateTime']),
-            latestEditDateTime: jsonData['latestEditDateTime'] != null
-                ? DateTime.parse(jsonData['latestEditDateTime'])
-                : null,
-          );
-          notes.add(note);
+        for (var item in jsonData) {
+          notes.add(NoteForListing.fromJson(item));
         }
         return APIResponse<List<NoteForListing>>(data: notes);
       }
@@ -38,16 +30,7 @@ class NotesService {
     return http.get(Uri.parse(API + '/notes/' + noteID), headers: headers).then((data) {
       if (data.statusCode == 200) {
         final jsonData = json.decode(data.body);
-        final note = Note(
-          noteID: jsonData['noteID'],
-          noteTitle: jsonData['noteTitle'],
-          noteContent: jsonData['noteContent'],
-          createDateTime: DateTime.parse(jsonData['createDateTime']),
-          latestEditDateTime: jsonData['latestEditDateTime'] != null
-              ? DateTime.parse(jsonData['latestEditDateTime'])
-              : null,
-        );
-        return APIResponse<Note>(data: note);
+        return APIResponse<Note>(data: Note.fromJson(jsonData));
       }
       return APIResponse<Note>(
           error: true, errorMessage: 'An error occured');
