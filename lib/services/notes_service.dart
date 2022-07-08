@@ -6,8 +6,7 @@ import 'package:tuso_working_with_rest_api/models/note_for_listing.dart';
 import 'package:http/http.dart' as http;
 
 class NotesService {
-  static const API =
-      'https://tq-notes-api-jkrgrdggbq-el.a.run.app/swagger/index.html';
+  static const API = 'https://tq-notes-api-jkrgrdggbq-el.a.run.app';
 
   Future<APIResponse<List<NoteForListing>>> getNotesList() {
     const headers = {'apiKey': '04ad70cc-0822-4663-9e34-81007343505e'};
@@ -29,8 +28,9 @@ class NotesService {
         }
         return APIResponse<List<NoteForListing>>(data: notes);
       }
-      return APIResponse<List<NoteForListing>>(error: true, errorMessage: 'An error occured');
-    })
-    .catchError((_) => APIResponse<List<NoteForListing>>(error: true, errorMessage: 'An error occured'));
+      return APIResponse<List<NoteForListing>>(
+          error: true, errorMessage: 'An error occured');
+    }).catchError((_) => APIResponse<List<NoteForListing>>(
+        error: true, errorMessage: 'An error occured'));
   }
 }
