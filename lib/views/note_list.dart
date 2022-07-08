@@ -58,7 +58,7 @@ class _NoteListState extends State<NoteList> {
                   Divider(height: 1, color: Colors.green),
               itemBuilder: (_, index) {
                 return Dismissible(
-                  key: ValueKey(_apiResponse.data[index].noteID),
+                  key: ValueKey(_apiResponse!.data![index].noteID),
                   direction: DismissDirection.startToEnd,
                   onDismissed: (direction) {},
                   confirmDismiss: (direction) async {
@@ -81,16 +81,16 @@ class _NoteListState extends State<NoteList> {
                         style:
                             TextStyle(color: Theme.of(context).primaryColor)),
                     subtitle: Text(
-                        'Last edited on ${formatDatetime(_apiResponse.data[index].latestEditDateTime!)}'),
+                        'Last edited on ${formatDatetime(_apiResponse!.data![index].latestEditDateTime ?? _apiResponse!.data![index].createDateTime)}'),
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (_) => NoteModify(
-                              noteID: _apiResponse.data[index].noteID)));
+                              noteID: _apiResponse!.data![index].noteID)));
                     },
                   ),
                 );
               },
-              itemCount: _apiResponse.data.length,
+              itemCount: _apiResponse!.data!.length,
             ),
     );
   }
