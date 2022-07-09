@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:tuso_working_with_rest_api/models/note.dart';
+import 'package:tuso_working_with_rest_api/models/note_insert.dart';
 import 'package:tuso_working_with_rest_api/services/notes_service.dart';
 
 class NoteModify extends StatefulWidget {
@@ -30,24 +31,23 @@ class _NoteModifyState extends State<NoteModify> {
   void initState() {
     super.initState();
 
-    if(isEditing){
-      
+    if (isEditing) {
       setState(() {
-      _isLoading = true;
-    });
-
-      notesService.getNote(widget.noteID!).then((response) {
-      setState(() {
-        _isLoading = false;
+        _isLoading = true;
       });
 
-      if (response.error) {
-        errorMessage = response.errorMessage ?? 'An error occured';
-      }
-      note = response.data;
-      _titleController.text = note!.noteTitle;
-      _contentController.text = note!.noteContent;
-    });
+      notesService.getNote(widget.noteID!).then((response) {
+        setState(() {
+          _isLoading = false;
+        });
+
+        if (response.error) {
+          errorMessage = response.errorMessage ?? 'An error occured';
+        }
+        note = response.data;
+        _titleController.text = note!.noteTitle;
+        _contentController.text = note!.noteContent;
+      });
     }
   }
 
@@ -57,35 +57,76 @@ class _NoteModifyState extends State<NoteModify> {
       appBar: AppBar(title: Text(isEditing ? 'Edit Note' : 'Create Note')),
       body: Padding(
         padding: const EdgeInsets.all(12.0),
-        child: _isLoading ? Center(child: CircularProgressIndicator()) : Column(
-          children: <Widget>[
-            TextField(
-              controller: _titleController,
-              decoration: InputDecoration(hintText: "Note title"),
-            ),
-            Container(height: 8),
-            TextField(
-              controller: _contentController,
-              decoration: InputDecoration(hintText: "Note content"),
-            ),
-            Container(height: 16),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                child: const Text(
-                  'Submit',
-                  style: TextStyle(color: Colors.white),
-                ),
-                style: ElevatedButton.styleFrom(
-                  primary: Theme.of(context).primaryColor,
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
+        child: _isLoading
+            ? Center(child: CircularProgressIndicator())
+            : Column(
+                children: <Widget>[
+                  TextField(
+                    controller: _titleController,
+                    decoration: InputDecoration(hintText: "Note title"),
+                  ),
+                  Container(height: 8),
+                  TextField(
+                    controller: _contentController,
+                    decoration: InputDecoration(hintText: "Note content"),
+                  ),
+                  Container(height: 16),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      child: const Text(
+                        'Submit',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        primary: Theme.of(context).primaryColor,
+                      ),
+                      onPressed: () async {
+                        if (isEditing) {
+                          //update note
+                        } else {
+                          setState(() {
+                            _isLoading = true;
+                          });
+
+                          final note = NoteInsert(
+                              noteTitle: _titleController.text,
+                              noteContent: _contentController.text);
+                          final result = await notesService.createNote(note);
+
+                          setState(() {
+                            _isLoading = false;
+                          });
+
+                          final title = 'Done';
+                          final text = result.error
+                              ? (result.errorMessage ?? 'An error occured')
+                              : 'Your note was created';
+
+                          showDialog(
+                              context: context,
+                              builder: (_) => AlertDialog(
+                                    title: Text(title),
+                                    content: Text(text),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        child: Text('Ok'),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                    ],
+                                  )).then((data) {
+                            if (result.data!) {
+                              Navigator.of(context).pop();
+                            }
+                          });
+                        }
+                      },
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
       ),
     );
   }

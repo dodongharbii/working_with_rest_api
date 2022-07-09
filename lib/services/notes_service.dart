@@ -9,7 +9,9 @@ import 'package:tuso_working_with_rest_api/models/note_insert.dart';
 
 class NotesService {
   static const API = 'https://tq-notes-api-jkrgrdggbq-el.a.run.app';
-  static const headers = {'apiKey': '04ad70cc-0822-4663-9e34-81007343505e'};
+  static const headers = {'apiKey': '04ad70cc-0822-4663-9e34-81007343505e',
+  'Content-Type': 'application/json'
+  };
 
   Future<APIResponse<List<NoteForListing>>> getNotesList() {
     return http.get(Uri.parse(API + '/notes'), headers: headers).then((data) {
