@@ -30,11 +30,13 @@ class _NoteModifyState extends State<NoteModify> {
   void initState() {
     super.initState();
 
-    setState(() {
+    if(isEditing){
+      
+      setState(() {
       _isLoading = true;
     });
 
-    notesService.getNote(widget.noteID!).then((response) {
+      notesService.getNote(widget.noteID!).then((response) {
       setState(() {
         _isLoading = false;
       });
@@ -46,6 +48,7 @@ class _NoteModifyState extends State<NoteModify> {
       _titleController.text = note!.noteTitle;
       _contentController.text = note!.noteContent;
     });
+    }
   }
 
   @override
