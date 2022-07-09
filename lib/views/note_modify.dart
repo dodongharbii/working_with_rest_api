@@ -68,12 +68,14 @@ class _NoteModifyState extends State<NoteModify> {
             Container(height: 16),
             SizedBox(
               width: double.infinity,
-              child: RaisedButton(
-                child: Text(
+              child: ElevatedButton(
+                child: const Text(
                   'Submit',
                   style: TextStyle(color: Colors.white),
                 ),
-                color: Theme.of(context).primaryColor,
+                style: ElevatedButton.styleFrom(
+                  primary: Theme.of(context).primaryColor,
+                ),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },

@@ -43,18 +43,18 @@ class _NoteListState extends State<NoteList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('List of Notes')),
+      appBar: AppBar(title: const Text('List of Notes')),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (_) => NoteModify()));
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
       body: Builder(
         builder: (_) {
           if (_isLoading) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
 
           if (_apiResponse!.error) {
